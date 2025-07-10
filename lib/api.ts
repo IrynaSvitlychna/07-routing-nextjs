@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Note } from "../types/note";
+import { Note} from "../types/note";
 
 
   export interface PaginatedNotesResponse {
@@ -15,12 +15,15 @@ export interface DeletedNoteInfo {
   updatedAt: string
   tag: "Todo" | "Work" | "Personal" | "Meeting" | "Shopping";
 }  
+
+export type Category = {
+  id: string;
+  name: string;
+  description: string;
+  createdAt: string;
+  updatedAt: string;
+};
 // axios.defaults.baseURL = 'https://notehub-public.goit.study/api'
-  
-// export const getNotes = async () => {
-//   const { data } = await axios<PaginatedNotesResponse>('/notes')
-//   return data
-// };
 
  
 const request = axios.create({
@@ -30,24 +33,27 @@ const request = axios.create({
   },
 });
 
-export const getSingleNote = async (id: number) => {
-  const { data } = await axios.get<Note>(`/notes/${id}`)
-  return data
-}
+export const getSingleNote = async (id: number): Promise<Note> => {
+  const { data } = await request.get<Note>(`/notes/${id}`);
+  return data;
+};
 
 export const fetchNotes = async (
   search: string,
-page: number
+  page: number,
+tag?: "Todo" | "Work" | "Personal" | "Meeting" | "Shopping"
 ): Promise<PaginatedNotesResponse> => {
   
   const params: {
     search?: string;
     page: number;
     perPage: number; 
+    tag?: string;
   } = {
     ...(search !== "" && { search: search }),
     page,
     perPage: 12, 
+    ...(tag && {tag}),
   }
  
     const response = await request.get("/notes", {
@@ -57,7 +63,7 @@ page: number
   return {
     notes: response.data.notes,
     totalPages: response.data.totalPages,
-  };
+    };
    
 };
 
@@ -80,3 +86,4 @@ export const deleteNote = async (id: number): Promise<DeletedNoteInfo> => {
     return response.data;
   
 };
+

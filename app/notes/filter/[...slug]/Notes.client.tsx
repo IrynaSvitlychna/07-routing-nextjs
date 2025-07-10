@@ -1,10 +1,10 @@
 'use client';
 
-import css from '../notes/NotesPage.module.css';
-import SearchBox from '../../components/SearchBox/SearchBox';
-import NoteList from '../../components/NoteList/NoteList';
-import Pagination from '../../components/Pagination/Pagination';
-import NoteModal from '../../components/NoteModal/NoteModal';
+import css from './NotesPage.module.css';
+import SearchBox from '@/components/SearchBox/SearchBox';
+import NoteList from '@/components/NoteList/NoteList';
+import Pagination from '@/components/Pagination/Pagination';
+import NoteModal from '@/components/NoteModal/NoteModal';
 import { type PaginatedNotesResponse } from "@/lib/api";
 import { fetchNotes } from "@/lib/api";
 import { useDebounce } from "use-debounce";
@@ -20,11 +20,12 @@ type NotesClientProps = {
     initialData: {
       notes: Note[];
       totalPages: number;
-    };
+  };
+  initialTag?: string;
   };
   
 
-const NotesClient = ({ initialData }:NotesClientProps ) => {
+const NotesClient = ({ initialData, initialTag }:NotesClientProps ) => {
     const [currentQuery, setCurrentQuery] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
     const [debouncedSearchQuery] = useDebounce(currentQuery, 500);
@@ -34,7 +35,7 @@ const NotesClient = ({ initialData }:NotesClientProps ) => {
   
     const { data,  isLoading, isError, } = useQuery<
       PaginatedNotesResponse>({
-        queryKey: ["notes", currentPage, debouncedSearchQuery],
+        queryKey: ["notes", currentPage, debouncedSearchQuery, initialTag],
         queryFn: () => fetchNotes(debouncedSearchQuery, currentPage),
           placeholderData: keepPreviousData,
           initialData: initialData,
