@@ -6,7 +6,9 @@ export interface Note {
     updatedAt: string; // Дата останнього оновлення 
     tag: "Todo" | "Work" | "Personal" | "Meeting" | "Shopping";
 }
-  
+ 
+export type Tag = "Todo" | "Work" | "Personal" | "Meeting" | "Shopping";
+ 
 export const tags: string[] = [
   "All",
   "Work",

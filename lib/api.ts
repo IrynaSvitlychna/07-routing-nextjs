@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Note} from "../types/note";
+import { Note, Tag} from "../types/note";
 
 
   export interface PaginatedNotesResponse {
@@ -41,29 +41,26 @@ export const getSingleNote = async (id: number): Promise<Note> => {
 export const fetchNotes = async (
   search: string,
   page: number,
-tag?: "Todo" | "Work" | "Personal" | "Meeting" | "Shopping"
+  tag?: Tag,
 ): Promise<PaginatedNotesResponse> => {
   
   const params: {
     search?: string;
     page: number;
-    perPage: number; 
+    perPage: number;
     tag?: string;
   } = {
     ...(search !== "" && { search: search }),
     page,
-    perPage: 12, 
-    ...(tag && {tag}),
+    perPage: 12,
+    ...(tag && { tag }),
   }
  
-    const response = await request.get("/notes", {
-      params
-    });
+  const response = await request.get("/notes", {
+    params
+  });
 
-  return {
-    notes: response.data.notes,
-    totalPages: response.data.totalPages,
-    };
+  return response.data
    
 };
 
