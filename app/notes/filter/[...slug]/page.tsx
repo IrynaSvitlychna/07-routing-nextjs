@@ -10,7 +10,7 @@ type Props = {
   
   export default async function Notes({ params }: Props) {
     const { slug } = await params;
-    const category = slug[0] === 'all' ? undefined : slug[0] as "Todo" | "Work" | "Personal" | "Meeting" | "Shopping";
+    const category = slug[0] === 'All' ? undefined : slug[0] as "Todo" | "Work" | "Personal" | "Meeting" | "Shopping";
 
     const tag: Tag | string = slug[0];
     
