@@ -1,6 +1,6 @@
 import { fetchNotes } from "@/lib/api";
 import NotesClient from "./Notes.client";
-import {Tag} from "@/types/note"
+// import {Tag} from "@/types/note"
 
 type Props = {
     params: Promise<{ slug: string[] }>;
@@ -12,7 +12,7 @@ type Props = {
     const { slug } = await params;
     const category = slug[0] === 'All' ? undefined : slug[0] as "Todo" | "Work" | "Personal" | "Meeting" | "Shopping";
 
-    const tag: Tag | string = slug[0];
+    // const tag: Tag | string = slug[0];
     
     const initialData = await fetchNotes( ``, 1, category);
   
