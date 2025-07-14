@@ -4,7 +4,7 @@ import css from './NotesPage.module.css';
 import SearchBox from '@/components/SearchBox/SearchBox';
 import NoteList from '@/components/NoteList/NoteList';
 import Pagination from '@/components/Pagination/Pagination';
-import NoteModal from '@/components/NoteModal/NoteModal';
+import NoteModal from '@/components/Modal/Modal';
 import { type PaginatedNotesResponse } from "@/lib/api";
 import { fetchNotes } from "@/lib/api";
 import { useDebounce } from "use-debounce";
