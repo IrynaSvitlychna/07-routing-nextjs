@@ -4,12 +4,13 @@ import css from './NotesPage.module.css';
 import SearchBox from '@/components/SearchBox/SearchBox';
 import NoteList from '@/components/NoteList/NoteList';
 import Pagination from '@/components/Pagination/Pagination';
-import NoteModal from '@/components/Modal/Modal';
+import Modal from '@/components/Modal/Modal';
+import NoteForm from "@/components/NoteForm/NoteForm";
 import { type PaginatedNotesResponse } from "@/lib/api";
 import { fetchNotes } from "@/lib/api";
 import { useDebounce } from "use-debounce";
 import { useState } from "react";
-import { type Note } from '@/types/note';
+import { type Note, Tag } from '@/types/note';
   import {
     useQuery,
     keepPreviousData,
@@ -21,7 +22,7 @@ type NotesClientProps = {
       notes: Note[];
       totalPages: number;
   };
-  initialTag?: string;
+  initialTag: string | undefined;
   };
   
 
@@ -35,8 +36,13 @@ const NotesClient = ({ initialData, initialTag }:NotesClientProps ) => {
   
     const { data,  isLoading, isError, } = useQuery<
       PaginatedNotesResponse>({
-        queryKey: ["notes", currentPage, debouncedSearchQuery, initialTag],
-        queryFn: () => fetchNotes(debouncedSearchQuery, currentPage),
+        queryKey: ["notes", debouncedSearchQuery, currentPage, initialTag],
+        queryFn: () =>
+          fetchNotes(
+            debouncedSearchQuery,
+            currentPage,
+            initialTag !== "All" ? (initialTag as Tag) : undefined
+          ),
           placeholderData: keepPreviousData,
           initialData: initialData,
       });
@@ -68,13 +74,22 @@ const NotesClient = ({ initialData, initialTag }:NotesClientProps ) => {
           </button>
         </header>
         
-        {isModalOpen && <NoteModal onClose={() => setIsModalOpen(false)} />}
+        {isModalOpen && (
+          <Modal onClose={() => setIsModalOpen(false)}>
+            <NoteForm onClose={() => setIsModalOpen(false)} />
+          </Modal>
+          )}
 
         {isLoading && <p>Loading...</p>}
         {isError && <p>Something went wrong</p>}
         
         {data && data.notes.length > 0 && <NoteList notes={data.notes} />}
         
+        {data && data.notes.length > 0 ? (
+       <NoteList notes={data.notes} />
+        ) : (
+       <p>No notes found.</p>
+        )}
       </div>
     );
   }

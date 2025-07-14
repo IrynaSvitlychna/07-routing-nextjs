@@ -20,8 +20,13 @@ const TagsMenu = () => {
             <button className={css.menuButton} onClick={toggle}>
                 Notes
             </button>
-            {isOpen && (
-                <ul className={css.menuList}>
+        {isOpen && (
+          <ul className={css.menuList}>
+            <li className={css.menuItem}>
+              <Link href={`/notes/filter/All`} onClick={handleCloseMenu}>
+              All notes
+            </Link>
+             </li>
                 {tags.map((tag) => (
                   <li key={tag} className={css.menuItem}>
                     <Link

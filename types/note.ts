@@ -9,8 +9,7 @@ export interface Note {
  
 export type Tag = "Todo" | "Work" | "Personal" | "Meeting" | "Shopping";
  
-export const tags: string[] = [
-  "All",
+export const tags: Tag[] = [
   "Work",
   "Personal",
   "Meeting",
