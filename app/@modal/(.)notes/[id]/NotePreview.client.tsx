@@ -2,10 +2,10 @@
 
 import { useParams, useRouter } from 'next/navigation';
 import Modal from "@/components/Modal/Modal";
-import NotePreview from "@/components/NotePreview/NotePreview";
+import NotePreviewModal from '@/components/NotePreviewModal/NotePreviewModal';
 
 
-const PreviewDetailsClient = () => {
+const NotePreview = () => {
 
   const { id } = useParams();
   const router = useRouter();
@@ -14,9 +14,9 @@ const PreviewDetailsClient = () => {
 
   return (
     <Modal onClose={closeModal}>
-      <NotePreview id={Number(id)} onClose={closeModal} />
+      <NotePreviewModal id={Number(id)} onClose={closeModal} />
     </Modal>
   );
 };
 
-export default PreviewDetailsClient;
+export default NotePreview;

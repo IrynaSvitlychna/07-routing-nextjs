@@ -2,15 +2,14 @@
 import { getSingleNote  } from "@/lib/api";
 import css from "./NotePreview.module.css";
 import { useQuery } from "@tanstack/react-query";
-// import Loader from "../Loader/Loader";
-// import ErrorText from "../Error/ErrorText";
+
 
 type NotePreviewProps = {
   id: number;
   onClose: () => void;
 };
 
-export default function NotePreview({ id, onClose }: NotePreviewProps) {
+export default function NotePreviewModal({ id, onClose }: NotePreviewProps) {
   const {
     data: note,
     isLoading,
@@ -23,9 +22,7 @@ export default function NotePreview({ id, onClose }: NotePreviewProps) {
 
   return (
     <>
-      {/* {isLoading && <Loader />}
-      {isError && <ErrorText message="Something went wrong." />} */}
-      {note && (
+        {note && (
         <div className={css.container}>
           <div className={css.item}>
             <div className={css.header}>
