@@ -10,7 +10,7 @@ import { type PaginatedNotesResponse } from "@/lib/api";
 import { fetchNotes } from "@/lib/api";
 import { useDebounce } from "use-debounce";
 import { useState } from "react";
-import { type Note, Tag } from '@/types/note';
+import { type Tag } from '@/types/note';
   import {
     useQuery,
     keepPreviousData,
@@ -18,15 +18,12 @@ import { type Note, Tag } from '@/types/note';
 
   
 type NotesClientProps = {
-    initialData: {
-      notes: Note[];
-      totalPages: number;
-  };
-  initialTag: string | undefined;
+    initialData: PaginatedNotesResponse;
+  tag: string | undefined;
   };
   
 
-const NotesClient = ({ initialData, initialTag }:NotesClientProps ) => {
+const NotesClient = ({ initialData, tag }:NotesClientProps ) => {
     const [currentQuery, setCurrentQuery] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
     const [debouncedSearchQuery] = useDebounce(currentQuery, 500);
@@ -36,12 +33,12 @@ const NotesClient = ({ initialData, initialTag }:NotesClientProps ) => {
   
     const { data,  isLoading, isError, } = useQuery<
       PaginatedNotesResponse>({
-        queryKey: ["notes", debouncedSearchQuery, currentPage, initialTag],
+        queryKey: ["notes", debouncedSearchQuery, currentPage, tag],
         queryFn: () =>
           fetchNotes(
             debouncedSearchQuery,
             currentPage,
-            initialTag !== "All" ? (initialTag as Tag) : undefined
+            tag !== "All" ? (tag as Tag) : undefined
           ),
           placeholderData: keepPreviousData,
           initialData: initialData,
@@ -82,9 +79,7 @@ const NotesClient = ({ initialData, initialTag }:NotesClientProps ) => {
 
         {isLoading && <p>Loading...</p>}
         {isError && <p>Something went wrong</p>}
-        
-        {data && data.notes.length > 0 && <NoteList notes={data.notes} />}
-        
+              
         {data && data.notes.length > 0 ? (
        <NoteList notes={data.notes} />
         ) : (

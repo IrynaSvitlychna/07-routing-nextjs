@@ -16,5 +16,5 @@ type Props = {
     
     const initialData = await fetchNotes( ``, 1, category);
   
-    return <NotesClient initialData={initialData} initialTag={category} />;
+    return <NotesClient initialData={initialData} tag={category} />;
   }
